@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CurrencyConverterVK</string>
+    <string name="curr_convertor">Конвертатор валют</string>
+    <string name="curr_input_selector">curr_input_selector</string>
+    <string name="usd">USD</string>
+    <string name="rub">RUB</string>
+    <string name="_0">0</string>
+    <string name="convert">Сконвертировать</string>
 </resources>
