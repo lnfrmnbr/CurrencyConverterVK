@@ -10,6 +10,17 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.currencyconvertervk.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+data class ExchangeRatesResponse(
+    val rates: Map<String, Double>
+)
+
+data class CurrencyExchange(
+    val baseCurrency: String,
+    val targetCurrency: String
+)
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -34,12 +45,15 @@ class MainActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this, R.layout.drop_down_item, currency)
         binding.currInput.setAdapter(arrayAdapter)
         binding.currOutput.setAdapter(arrayAdapter)
+        fetchCurrencyExchangeRates("USD", "EUR")
 
 
         convertButton.setOnClickListener{
-            val currInputVal = currInput.text
-            val currOutputVal = currOutput.text
+            val currInputVal = currInput.text.toString()
+            val currOutputVal = currOutput.text.toString()
             val currNumInputVal = currNumInput.text
+
+            fetchCurrencyExchangeRates(currInputVal, currOutputVal)
         }
 
     }
