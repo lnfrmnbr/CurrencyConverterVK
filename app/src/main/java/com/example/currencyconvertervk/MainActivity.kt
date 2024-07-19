@@ -1,6 +1,7 @@
 package com.example.currencyconvertervk
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -12,15 +13,27 @@ import com.example.currencyconvertervk.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.create
+import retrofit2.http.GET
+
 
 data class ExchangeRatesResponse(
     val rates: Map<String, Double>
 )
 
-data class CurrencyExchange(
+class CurrencyExchange(
     val baseCurrency: String,
     val targetCurrency: String
 )
+
+interface CurrencyApi{
+
+    @GET("?get=rates&pairs=USDRUB&key=170b2bf0625601c09c371bae2a79b8ed")
+    fun getData(): Call<List<CurrencyExchange>>
+}
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -45,7 +58,8 @@ class MainActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this, R.layout.drop_down_item, currency)
         binding.currInput.setAdapter(arrayAdapter)
         binding.currOutput.setAdapter(arrayAdapter)
-        fetchCurrencyExchangeRates("USD", "EUR")
+        Log.e("DEBUG","ff")
+        getExchangeRates()
 
 
         convertButton.setOnClickListener{
@@ -53,8 +67,36 @@ class MainActivity : AppCompatActivity() {
             val currOutputVal = currOutput.text.toString()
             val currNumInputVal = currNumInput.text
 
-            fetchCurrencyExchangeRates(currInputVal, currOutputVal)
+            }
+
         }
 
     }
+    private fun getExchangeRates(){
+        val api = Retrofit.Builder()
+            .baseUrl("https://currate.ru/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(CurrencyApi::class.java)
+        Log.e("DEBUG","ygrt0")
+        api.getData().enqueue(object : Callback<List<CurrencyExchange>>{
+            override fun onResponse(
+                call: Call<List<CurrencyExchange>>,
+                response: Response<List<CurrencyExchange>>
+            ) {
+                Log.e("DEBUG","0")
+                if(response.isSuccessful){
+                    Log.e("DEBUG","1")
+                    response.body()?.let{
+                        for (i in it){
+                            Log.e("DEBUG","onresp $i")
+                        }
+                    }
+            }
+        }
+
+            override fun onFailure(call: Call<List<CurrencyExchange>>, t: Throwable) {
+                Log.e(",", "onFammilure: ${t.message}")
+            }
+        })
 }
