@@ -19,29 +19,20 @@ import retrofit2.Response
 import retrofit2.create
 import retrofit2.http.GET
 
-
 data class ExchangeRatesResponse(
-    val rates: Map<String, Double>
+    val status: Int,
+    val message: String,
+    val data: CurrencyRates
 )
 
-class CurrencyExchange(
-    val baseCurrency: String,
-    val targetCurrency: String
-)
-
-data class Comments(
-    val body: String,
-    val email: String,
-    val id: Int,
-    val name: String,
-    val postId: Int
+data class CurrencyRates(
+    val USDRUB: String
 )
 
 interface CurrencyApi{
 
-    //@GET("?get=rates&pairs=USDRUB&key=170b2bf0625601c09c371bae2a79b8ed")
-    @GET("comments")
-    fun getData(): Call<List<Comments>>
+    @GET("?get=rates&pairs=USDRUB&key=170b2bf0625601c09c371bae2a79b8ed")
+    fun getData(): Call<ExchangeRatesResponse>
 }
 
 class MainActivity : AppCompatActivity() {
@@ -83,29 +74,28 @@ class MainActivity : AppCompatActivity() {
     }
     private fun getExchangeRates(){
         val api = Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
-            //.baseUrl("https://currate.ru/api/")
+            //.baseUrl("https://jsonplaceholder.typicode.com/")
+            .baseUrl("https://currate.ru/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(CurrencyApi::class.java)
         Log.e("DEBUG","ygrt0")
-        api.getData().enqueue(object : Callback<List<Comments>>{
+        api.getData().enqueue(object : Callback<ExchangeRatesResponse>{
             override fun onResponse(
-                call: Call<List<Comments>>,
-                response: Response<List<Comments>>
+                call: Call<ExchangeRatesResponse>,
+                response: Response<ExchangeRatesResponse>
             ) {
                 Log.e("DEBUG","0")
                 if(response.isSuccessful){
                     Log.e("DEBUG","1")
                     response.body()?.let{
-                        for (i in it){
-                            Log.e("DEBUG","onresp $i")
-                        }
+
+                            Log.e("DEBUG","onresp $it")
                     }
             }
         }
 
-            override fun onFailure(call: Call<List<Comments>>, t: Throwable) {
+            override fun onFailure(call: Call<ExchangeRatesResponse>, t: Throwable) {
                 Log.e(",", "onFammilure: ${t.message}")
             }
         })
