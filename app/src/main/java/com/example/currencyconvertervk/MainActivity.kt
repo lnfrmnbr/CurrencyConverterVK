@@ -29,10 +29,19 @@ class CurrencyExchange(
     val targetCurrency: String
 )
 
+data class Comments(
+    val body: String,
+    val email: String,
+    val id: Int,
+    val name: String,
+    val postId: Int
+)
+
 interface CurrencyApi{
 
-    @GET("?get=rates&pairs=USDRUB&key=170b2bf0625601c09c371bae2a79b8ed")
-    fun getData(): Call<List<CurrencyExchange>>
+    //@GET("?get=rates&pairs=USDRUB&key=170b2bf0625601c09c371bae2a79b8ed")
+    @GET("comments")
+    fun getData(): Call<List<Comments>>
 }
 
 class MainActivity : AppCompatActivity() {
@@ -74,15 +83,16 @@ class MainActivity : AppCompatActivity() {
     }
     private fun getExchangeRates(){
         val api = Retrofit.Builder()
-            .baseUrl("https://currate.ru/api/")
+            .baseUrl("https://jsonplaceholder.typicode.com/")
+            //.baseUrl("https://currate.ru/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(CurrencyApi::class.java)
         Log.e("DEBUG","ygrt0")
-        api.getData().enqueue(object : Callback<List<CurrencyExchange>>{
+        api.getData().enqueue(object : Callback<List<Comments>>{
             override fun onResponse(
-                call: Call<List<CurrencyExchange>>,
-                response: Response<List<CurrencyExchange>>
+                call: Call<List<Comments>>,
+                response: Response<List<Comments>>
             ) {
                 Log.e("DEBUG","0")
                 if(response.isSuccessful){
@@ -95,7 +105,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-            override fun onFailure(call: Call<List<CurrencyExchange>>, t: Throwable) {
+            override fun onFailure(call: Call<List<Comments>>, t: Throwable) {
                 Log.e(",", "onFammilure: ${t.message}")
             }
         })
