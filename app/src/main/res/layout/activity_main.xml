@@ -95,21 +95,13 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/curr_num_output_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <TextView
                 android:layout_width="100dp"
                 android:layout_height="70dp"
                 android:layout_margin="8dp"
                 android:hint="@string/_0"
-                android:inputType="none"
-                app:counterMaxLength="10">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/curr_num_output"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:gravity="center"
+                android:id="@+id/curr_num_output" />
         </LinearLayout>
     </LinearLayout>
 

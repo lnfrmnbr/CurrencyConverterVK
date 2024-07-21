@@ -8,7 +8,7 @@
     <string name="convert">Сконвертировать</string>
     <string-array name="currency">
         <item>USD</item>
-        <item>EUR</item>
+        <item>RUB</item>
         <item>GBR</item>
         <item>BYN</item>
     </string-array>
