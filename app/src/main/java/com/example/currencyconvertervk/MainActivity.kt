@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.currencyconvertervk.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
 import org.w3c.dom.Text
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,8 +22,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.create
 import retrofit2.http.GET
-import retrofit2.http.Path
+import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
 import retrofit2.http.Query
+
 
 data class ExchangeRatesResponse(
     val status: Int,
@@ -88,16 +91,23 @@ class MainActivity : AppCompatActivity() {
             val currNumInputVal = currNumInput.text.toString().trim()
             Log.e("DEBUG","text")
             if(currInputVal==""||currOutputVal==""||currNumInputVal==""){
-                Log.e("DEBUG","toast")
                 Toast.makeText(this, "Необходимо заполнить все поля", Toast.LENGTH_LONG).show()
+            }
+            if (currInputVal == currOutputVal){
+                Toast.makeText(this, "Валюты должны быть различные", Toast.LENGTH_LONG).show()
             }
             else{
                 val currNumInputVal = currNumInputVal.toInt()
                 if (currInputVal+currOutputVal in listOfAvailableExchanges){
-                    getExchangeRates(currInputVal+currOutputVal,currNumInputVal,currNumOutput, 1)
+                    GlobalScope.launch{
+                        getExchangeRates(currInputVal+currOutputVal,currNumInputVal,currNumOutput, 1)
+                    }
                 }
                 else{
-                    getExchangeRates(currOutputVal+currInputVal,currNumInputVal,currNumOutput, -1)
+                    GlobalScope.launch{
+                        getExchangeRates(currOutputVal+currInputVal,currNumInputVal,currNumOutput, -1)
+
+                    }
                 }
             }
         }
@@ -105,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    private fun getExchangeRates(currency: String, amount: Int, textView: TextView, direction:Int){
+    suspend private fun getExchangeRates(currency: String, amount: Int, textView: TextView, direction:Int){
         val api = Retrofit.Builder()
             .baseUrl("https://currate.ru/api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -121,13 +131,14 @@ class MainActivity : AppCompatActivity() {
                 if(response.isSuccessful){
                     Log.e("DEBUG","1")
                     response.body()?.let{
+                        val ee = it
                         if (direction == 1){
+                            Log.e("DEBUG","dir1 $ee")
                             textView.text = (it.data.curr.toDouble()*amount).toString()
                         }
-                        else{
+                        else{ Log.e("DEBUG","dir2 $ee")
                             textView.text = (1/it.data.curr.toDouble()*amount).toString()
                         }
-                        Log.e("DEBUG","onresp $it")
                     }
             }
         }
