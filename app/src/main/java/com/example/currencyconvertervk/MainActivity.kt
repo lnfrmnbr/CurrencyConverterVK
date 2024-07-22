@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,7 +31,7 @@ data class ExchangeRatesResponse(
 )
 
 data class CurrencyRates(
-    val USDRUB: String
+    val curr: String
 )
 
 interface CurrencyApi {
@@ -83,19 +84,28 @@ class MainActivity : AppCompatActivity() {
         convertButton.setOnClickListener{
             val currInputVal = currInput.text.toString()
             val currOutputVal = currOutput.text.toString()
-            val currNumInputVal = currNumInput.text.toString().toInt()
-            if (currInputVal+currOutputVal in listOfAvailableExchanges){
-                getExchangeRates(currInputVal+currOutputVal,currNumInputVal,currNumOutput)
+            Log.e("DEBUG","text1")
+            val currNumInputVal = currNumInput.text.toString().trim()
+            Log.e("DEBUG","text")
+            if(currInputVal==""||currOutputVal==""||currNumInputVal==""){
+                Log.e("DEBUG","toast")
+                Toast.makeText(this, "Необходимо заполнить все поля", Toast.LENGTH_LONG).show()
             }
             else{
-                getExchangeRates(currOutputVal+currInputVal,currNumInputVal,currNumOutput)/////////
+                val currNumInputVal = currNumInputVal.toInt()
+                if (currInputVal+currOutputVal in listOfAvailableExchanges){
+                    getExchangeRates(currInputVal+currOutputVal,currNumInputVal,currNumOutput, 1)
+                }
+                else{
+                    getExchangeRates(currOutputVal+currInputVal,currNumInputVal,currNumOutput, -1)
+                }
             }
-            }
+        }
 
         }
 
     }
-    private fun getExchangeRates(currency: String, amount: Int, textView: TextView){
+    private fun getExchangeRates(currency: String, amount: Int, textView: TextView, direction:Int){
         val api = Retrofit.Builder()
             .baseUrl("https://currate.ru/api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -111,7 +121,12 @@ class MainActivity : AppCompatActivity() {
                 if(response.isSuccessful){
                     Log.e("DEBUG","1")
                     response.body()?.let{
-                        textView.text = (it.data.USDRUB.toDouble()*amount).toString()
+                        if (direction == 1){
+                            textView.text = (it.data.curr.toDouble()*amount).toString()
+                        }
+                        else{
+                            textView.text = (1/it.data.curr.toDouble()*amount).toString()
+                        }
                         Log.e("DEBUG","onresp $it")
                     }
             }
