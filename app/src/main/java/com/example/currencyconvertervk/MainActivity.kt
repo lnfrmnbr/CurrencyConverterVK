@@ -138,48 +138,44 @@ class MainActivity : AppCompatActivity() {
                     response.body()?.let{
                         val ee = it
                         if (direction == 1){
-                            Log.e("DEBUG","dir1 $ee")
                             if(currency == "USDRUB"){
-
-                                Log.e("DEBUG","122")
-                                textView.text = (it.data.USDRUB.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (it.data.USDRUB.toDouble()*amount))
                             }
                             if(currency == "USDBYN"){
-                                Log.e("DEBUG","222")
-                                textView.text = (it.data.USDBYN.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (it.data.USDBYN.toDouble()*amount))
                             }
                             if(currency == "BYNRUB"){
-                                textView.text = (it.data.BYNRUB.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (it.data.BYNRUB.toDouble()*amount))
                             }
                             if(currency == "EURRUB"){
-                                textView.text = (it.data.EURRUB.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (it.data.EURRUB.toDouble()*amount))
                             }
                             if(currency == "EURBYN"){
-                                textView.text = (it.data.EURBYN.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (it.data.EURBYN.toDouble()*amount))
                             }
                             if(currency == "EURUSD"){
-                                textView.text = (it.data.EURUSD.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (it.data.EURUSD.toDouble()*amount))
                             }
 
                         }
                         else{ Log.e("DEBUG","dir2 $ee")
                             if(currency == "USDRUB"){
-                                textView.text = (1/it.data.USDRUB.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (1/it.data.USDRUB.toDouble()*amount))
                             }
                             if(currency == "USDBYN"){
-                                textView.text = (1/it.data.USDBYN.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (1/it.data.USDBYN.toDouble()*amount))
                             }
                             if(currency == "BYNRUB"){
-                                textView.text = (1/it.data.BYNRUB.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (1/it.data.BYNRUB.toDouble()*amount))
                             }
                             if(currency == "EURRUB"){
-                                textView.text = (1/it.data.EURRUB.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (1/it.data.EURRUB.toDouble()*amount))
                             }
                             if(currency == "EURBYN"){
-                                textView.text = (1/it.data.EURBYN.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (1/it.data.EURBYN.toDouble()*amount))
                             }
                             if(currency == "EURUSD"){
-                                textView.text = (1/it.data.EURUSD.toDouble()*amount).toString()
+                                textView.text = String.format("%.2f", (1/it.data.EURUSD.toDouble()*amount))
                             }
                         }
                     }
