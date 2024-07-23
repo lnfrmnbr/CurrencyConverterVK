@@ -9,7 +9,7 @@
     <string-array name="currency">
         <item>USD</item>
         <item>RUB</item>
-        <item>GBR</item>
+        <item>EUR</item>
         <item>BYN</item>
     </string-array>
 </resources>

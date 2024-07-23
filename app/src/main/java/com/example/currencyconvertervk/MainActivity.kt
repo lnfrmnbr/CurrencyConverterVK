@@ -34,7 +34,12 @@ data class ExchangeRatesResponse(
 )
 
 data class CurrencyRates(
-    val curr: String
+    val USDRUB: String,
+    val BYNRUB: String,
+    val USDBYN: String,
+    val EURRUB: String,
+    val EURBYN : String,
+    val EURUSD : String
 )
 
 interface CurrencyApi {
@@ -134,10 +139,48 @@ class MainActivity : AppCompatActivity() {
                         val ee = it
                         if (direction == 1){
                             Log.e("DEBUG","dir1 $ee")
-                            textView.text = (it.data.curr.toDouble()*amount).toString()
+                            if(currency == "USDRUB"){
+
+                                Log.e("DEBUG","122")
+                                textView.text = (it.data.USDRUB.toDouble()*amount).toString()
+                            }
+                            if(currency == "USDBYN"){
+                                Log.e("DEBUG","222")
+                                textView.text = (it.data.USDBYN.toDouble()*amount).toString()
+                            }
+                            if(currency == "BYNRUB"){
+                                textView.text = (it.data.BYNRUB.toDouble()*amount).toString()
+                            }
+                            if(currency == "EURRUB"){
+                                textView.text = (it.data.EURRUB.toDouble()*amount).toString()
+                            }
+                            if(currency == "EURBYN"){
+                                textView.text = (it.data.EURBYN.toDouble()*amount).toString()
+                            }
+                            if(currency == "EURUSD"){
+                                textView.text = (it.data.EURUSD.toDouble()*amount).toString()
+                            }
+
                         }
                         else{ Log.e("DEBUG","dir2 $ee")
-                            textView.text = (1/it.data.curr.toDouble()*amount).toString()
+                            if(currency == "USDRUB"){
+                                textView.text = (1/it.data.USDRUB.toDouble()*amount).toString()
+                            }
+                            if(currency == "USDBYN"){
+                                textView.text = (1/it.data.USDBYN.toDouble()*amount).toString()
+                            }
+                            if(currency == "BYNRUB"){
+                                textView.text = (1/it.data.BYNRUB.toDouble()*amount).toString()
+                            }
+                            if(currency == "EURRUB"){
+                                textView.text = (1/it.data.EURRUB.toDouble()*amount).toString()
+                            }
+                            if(currency == "EURBYN"){
+                                textView.text = (1/it.data.EURBYN.toDouble()*amount).toString()
+                            }
+                            if(currency == "EURUSD"){
+                                textView.text = (1/it.data.EURUSD.toDouble()*amount).toString()
+                            }
                         }
                     }
             }
