@@ -6,6 +6,9 @@
     <string name="rub">RUB</string>
     <string name="_0">0</string>
     <string name="convert">Сконвертировать</string>
+    <string name="val_1">Валюта 1</string>
+    <string name="val_2">Валюта 2</string>
+    <string name="_1">1</string>
     <string-array name="currency">
         <item>USD</item>
         <item>RUB</item>
