@@ -13,14 +13,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.currencyconvertervk.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.CoroutineScope
-import org.w3c.dom.Text
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 import retrofit2.http.GET
 import kotlinx.coroutines.*
 import kotlinx.coroutines.launch
@@ -87,14 +84,11 @@ class MainActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this, R.layout.drop_down_item, currency)
         binding.currInput.setAdapter(arrayAdapter)
         binding.currOutput.setAdapter(arrayAdapter)
-        Log.e("DEBUG","ff")
 
         convertButton.setOnClickListener{
             val currInputVal = currInput.text.toString()
             val currOutputVal = currOutput.text.toString()
-            Log.e("DEBUG","text1")
             val currNumInputVal = currNumInput.text.toString().trim()
-            Log.e("DEBUG","text")
             if(currInputVal==""||currOutputVal==""||currNumInputVal==""){
                 Toast.makeText(this, "Необходимо заполнить все поля", Toast.LENGTH_LONG).show()
             }
@@ -126,17 +120,13 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(CurrencyApi::class.java)
-        Log.e("DEBUG","ygrt0")
         api.getData(currency).enqueue(object : Callback<ExchangeRatesResponse>{
             override fun onResponse(
                 call: Call<ExchangeRatesResponse>,
                 response: Response<ExchangeRatesResponse>
             ) {
-                Log.e("DEBUG","0")
                 if(response.isSuccessful){
-                    Log.e("DEBUG","1")
                     response.body()?.let{
-                        val ee = it
                         if (direction == 1){
                             if(currency == "USDRUB"){
                                 textView.text = String.format("%.2f", (it.data.USDRUB.toDouble()*amount))
@@ -158,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                             }
 
                         }
-                        else{ Log.e("DEBUG","dir2 $ee")
+                        else{
                             if(currency == "USDRUB"){
                                 textView.text = String.format("%.2f", (1/it.data.USDRUB.toDouble()*amount))
                             }
@@ -183,7 +173,7 @@ class MainActivity : AppCompatActivity() {
         }
 
             override fun onFailure(call: Call<ExchangeRatesResponse>, t: Throwable) {
-                Log.e("DEBUG", "onFammilure: ${t.message}")
+                Log.e("DEBUG", "onFailure: ${t.message}")
             }
         })
 }
